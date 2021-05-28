@@ -10,7 +10,7 @@ class Mastermind
   def play
     puts "Starting new game."
     loop do
-      @guess = @current_player.make_guess
+      @guess = @current_player.ask_for_guess
       break if check_game_over(@guess)
     end
   end
@@ -42,15 +42,31 @@ class Player
 
   # make_secret
   def make_secret
-    secret = 1234
+    secret = "1234"
   end
 
   # make_guess
-  def make_guess
+  def ask_for_guess
     puts "#{self.name} make a guess?" 
-    guess = gets.chomp.to_i
-    puts "You guessed #{guess}."
-    return guess
+    guess = self.make_guess
+    if valid_guess(guess)
+      puts "You guessed #{guess}."
+      return guess
+    else
+      ask_for_guess
+    end
+  end
+
+  def make_guess
+    guess = gets.chomp
+  end
+
+  def valid_guess(guess)
+    if /[0-9]{4}/ =~ guess
+      return guess
+    else
+      puts "Invalid guess, guess again."
+    end
   end
 end
 
