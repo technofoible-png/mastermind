@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mastermind
   def initialize
     @player1 = Player.new('Player 1')
@@ -8,7 +10,7 @@ class Mastermind
   end
 
   def play
-    puts "Starting new game."
+    puts 'Starting new game.'
     loop do
       @guess = @current_player.ask_for_guess
       make_hint(@guess)
@@ -18,40 +20,34 @@ class Mastermind
 
   def check_game_over(guess)
     if guess == @current_secret
-      puts "You win!"
-      return TRUE
+      puts 'You win!'
+      TRUE
     else
-      puts "Guess again."
+      puts 'Guess again.'
     end
   end
 
   def make_hint(guess)
-    puts 'Bulls: ' + check_bulls(guess).to_s
-    puts 'Cows: ' + check_cows(guess).to_s
+    puts "Bulls: #{check_bulls(guess)}"
+    puts "Cows: #{check_cows(guess)}"
   end
 
   def check_bulls(guess)
-    # turn secret and guess into array of nums
-    guess_array = guess.chars.map do |char| char.to_i; end
-    secret_array = @current_secret.chars.map do |char| char.to_i; end
+    guess_array = guess.chars.map(&:to_i)
+    secret_array = @current_secret.chars.map(&:to_i)
 
-    # loop through guess with index? to see if any element matches
     guess_array.each_with_index.reduce(0) do |bulls, (ele, index)|
-      if ele == secret_array[index]
-        bulls += 1
-      end
+      bulls += 1 if ele == secret_array[index]
       bulls
-    end 
+    end
   end
 
   def check_cows(guess)
-    guess_array = guess.chars.map do |char| char.to_i; end
-    secret_array = @current_secret.chars.map do |char| char.to_i; end
+    guess_array = guess.chars.map(&:to_i)
+    secret_array = @current_secret.chars.map(&:to_i)
 
     secret_array.reduce(0) do |cows, ele|
-      if guess_array.include?(ele)
-        cows += 1
-      end
+      cows += 1 if guess_array.include?(ele)
       cows
     end
   end
@@ -68,16 +64,15 @@ class Player
     nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     secret = []
     4.times { secret.push(nums.shuffle!.pop) }
-    return secret.join
+    secret.join
   end
 
-
   def ask_for_guess
-    puts "#{self.name} make a guess?" 
-    guess = self.make_guess
+    puts "#{name} make a guess?"
+    guess = make_guess
     if valid_guess(guess)
       puts "You guessed #{guess}."
-      return guess
+      guess
     else
       ask_for_guess
     end
@@ -89,9 +84,9 @@ class Player
 
   def valid_guess(guess)
     if /[0-9]{4}/ =~ guess
-     return guess
+      guess
     else
-      puts "Invalid guess, guess again."
+      puts 'Invalid guess, guess again.'
     end
   end
 end
