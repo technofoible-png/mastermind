@@ -27,6 +27,7 @@ class Mastermind
 
   def make_hint(guess)
     puts 'Bulls: ' + check_bulls(guess).to_s
+    puts 'Cows: ' + check_cows(guess).to_s
   end
 
   def check_bulls(guess)
@@ -43,7 +44,16 @@ class Mastermind
     end 
   end
 
-  def check_cows
+  def check_cows(guess)
+    guess_array = guess.chars.map do |char| char.to_i; end
+    secret_array = @current_secret.chars.map do |char| char.to_i; end
+
+    secret_array.reduce(0) do |cows, ele|
+      if guess_array.include?(ele)
+        cows += 1
+      end
+      cows
+    end
   end
 end
 
@@ -76,7 +86,7 @@ class Player
 
   def valid_guess(guess)
     if /[0-9]{4}/ =~ guess
-      return guess
+     return guess
     else
       puts "Invalid guess, guess again."
     end
