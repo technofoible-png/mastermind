@@ -65,7 +65,10 @@ class Player
   end
 
   def make_secret
-    secret = "1234"
+    nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    secret = []
+    4.times { secret.push(nums.shuffle!.pop) }
+    return secret.join
   end
 
 
