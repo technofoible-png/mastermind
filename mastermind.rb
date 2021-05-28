@@ -11,11 +11,11 @@ class Mastermind
     puts "Starting new game."
     loop do
       @guess = @current_player.ask_for_guess
+      make_hint(@guess)
       break if check_game_over(@guess)
     end
   end
 
-  # check game over
   def check_game_over(guess)
     if guess == @current_secret
       puts "You win!"
@@ -25,27 +25,40 @@ class Mastermind
     end
   end
 
-  # make_hint
-  def make_hint
-
+  def make_hint(guess)
+    puts 'Bulls: ' + check_bulls(guess).to_s
   end
 
+  def check_bulls(guess)
+    # turn secret and guess into array of nums
+    guess_array = guess.chars.map do |char| char.to_i; end
+    secret_array = @current_secret.chars.map do |char| char.to_i; end
+
+    # loop through guess with index? to see if any element matches
+    guess_array.each_with_index.reduce(0) do |bulls, (ele, index)|
+      if ele == secret_array[index]
+        bulls += 1
+      end
+      bulls
+    end 
+  end
+
+  def check_cows
+  end
 end
 
 class Player
-  # initialize
   attr_accessor :name
 
   def initialize(name)
     @name = name
   end
 
-  # make_secret
   def make_secret
     secret = "1234"
   end
 
-  # make_guess
+
   def ask_for_guess
     puts "#{self.name} make a guess?" 
     guess = self.make_guess
