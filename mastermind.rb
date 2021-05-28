@@ -1,7 +1,6 @@
 class Mastermind
   def initialize
     @player1 = Player.new('Player 1')
-    @player2 = Player.new('Player 2')
 
     @current_player = @player1
 
@@ -10,16 +9,17 @@ class Mastermind
 
   def play
     puts "Starting new game."
-    @guess = @current_player.make_guess
-    check_game_over(@guess)
-
-
+    loop do
+      @guess = @current_player.make_guess
+      break if check_game_over(@guess)
+    end
   end
 
   # check game over
   def check_game_over(guess)
     if guess == @current_secret
       puts "You win!"
+      return TRUE
     else
       puts "Guess again."
     end
